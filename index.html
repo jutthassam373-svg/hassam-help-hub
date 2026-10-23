@@ -2,6 +2,8 @@
 
 <html lang="en">
 <head>
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#123c69">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HASSAM HELP HUB</title>
@@ -27,6 +29,9 @@ footer{text-align:center;padding:25px;color:#a9bacd}
 </head>
 <body>
 <header>
+  <button id="installBtn" hidden>
+  📲 Install HASSAM HELP HUB
+</button>
 <h1>🌟 HASSAM HELP HUB</h1>
 <p>Helpful tools for everyday life — all in one place!</p>
 </header>
@@ -133,7 +138,36 @@ footer{text-align:center;padding:25px;color:#a9bacd}
 <p>Made with ❤️ by Hassam Jutt</p>
 <p>HASSAM HELP HUB © 2026</p>
 </footer>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .catch(error => console.log("Service worker error:", error));
+  });
+}
 
+let installPrompt;
+
+const installBtn = document.getElementById("installBtn");
+
+window.addEventListener("beforeinstallprompt", event => {
+  event.preventDefault();
+  installPrompt = event;
+  installBtn.hidden = false;
+});
+
+installBtn.addEventListener("click", async () => {
+  if (!installPrompt) return;
+
+  installPrompt.prompt();
+  await installPrompt.userChoice;
+
+  installPrompt = null;
+  installBtn.hidden = true;
+});
+
+window.addEventListener("appinstalled", () => {
+  installBtn.hidden = true;
+});
 <script>
 function calculate(){
 const a=document.getElementById('n1').value;
