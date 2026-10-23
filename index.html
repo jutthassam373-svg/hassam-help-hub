@@ -2,36 +2,40 @@
 
 <html lang="en">
 <head>
-  <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#123c69">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#123c69">
+<meta name="description" content="Free helpful tools for everyday life by Hassam Jutt.">
+<link rel="manifest" href="./manifest.json">
 <title>HASSAM HELP HUB</title>
+
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:#08111f;color:white}
 header{background:linear-gradient(135deg,#123c69,#087f8c);padding:35px 15px;text-align:center}
-header h1{margin:0;font-size:32px}
+header h1{margin:15px 0;font-size:32px}
 header p{color:#e0f7fa}
 .container{max-width:1000px;margin:auto;padding:20px}
 .search{width:100%;padding:14px;border:0;border-radius:10px;font-size:16px;margin-bottom:20px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
 .card{background:#142338;border:1px solid #263b55;border-radius:15px;padding:20px}
 .card h3{color:#55e6d0}
-button{background:#08a99a;color:white;border:0;border-radius:8px;padding:11px 15px;cursor:pointer;font-size:15px}
-input,select,textarea{max-width:100%}
+button{background:#08a99a;color:white;border:0;border-radius:8px;padding:11px 15px;cursor:pointer;font-size:15px;margin:4px 0}
+button:hover{background:#087f8c}
+input,select,textarea{max-width:100%;font-size:15px}
 .tool{margin-top:15px}
-.tool input,.tool textarea{width:100%;padding:10px;border-radius:7px;border:1px solid #aaa;margin:7px 0}
+.tool input,.tool textarea,.tool select{width:100%;padding:10px;border-radius:7px;border:1px solid #aaa;margin:7px 0}
 .result{color:#7fffd4;overflow-wrap:anywhere}
 footer{text-align:center;padding:25px;color:#a9bacd}
-.hidden{display:none}
+.hidden{display:none!important}
+#installBtn{background:#fff;color:#123c69;font-weight:bold;padding:13px 18px}
 </style>
+
 </head>
+
 <body>
 <header>
-  <button id="installBtn" hidden>
-  📲 Install HASSAM HELP HUB
-</button>
+<button id="installBtn" hidden>📲 Install HASSAM HELP HUB</button>
 <h1>🌟 HASSAM HELP HUB</h1>
 <p>Helpful tools for everyday life — all in one place!</p>
 </header>
@@ -39,7 +43,7 @@ footer{text-align:center;padding:25px;color:#a9bacd}
 <main class="container">
 <input class="search" id="search" placeholder="🔍 Search helpful tools..." oninput="searchTools()">
 
-<div class="grid" id="tools">
+<div class="grid">
 
 <section class="card">
 <h3>🧮 Calculator</h3>
@@ -138,98 +142,112 @@ footer{text-align:center;padding:25px;color:#a9bacd}
 <p>Made with ❤️ by Hassam Jutt</p>
 <p>HASSAM HELP HUB © 2026</p>
 </footer>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js")
-      .catch(error => console.log("Service worker error:", error));
-  });
+
+<script>
+const $ = id => document.getElementById(id);
+
+function calculate(){
+ const a=$('n1').value,b=$('n2').value,op=$('op').value;
+ if(a===''||b===''){$('calcResult').textContent='Please enter both numbers.';return}
+ const x=Number(a),y=Number(b);
+ if(op==='/'&&y===0){$('calcResult').textContent='Cannot divide by zero.';return}
+ const r=op==='+'?x+y:op==='-'?x-y:op==='*'?x*y:x/y;
+ $('calcResult').textContent='Answer: '+r;
+}
+
+function ageCalc(){
+ const value=$('dob').value;
+ if(!value){$('ageResult').textContent='Please select your birth date.';return}
+ const birth=new Date(value+'T00:00:00'),today=new Date();
+ if(birth>today){$('ageResult').textContent='Birth date cannot be in the future.';return}
+ let age=today.getFullYear()-birth.getFullYear();
+ if(today.getMonth()<birth.getMonth()||(today.getMonth()===birth.getMonth()&&today.getDate()<birth.getDate()))age--;
+ $('ageResult').textContent='Your age is '+age+' years.';
+}
+
+function countWords(){
+ const t=$('words').value.trim();
+ $('wordResult').textContent='Words: '+(t?t.split(/\s+/).length:0)+' | Characters: '+$('words').value.length;
+}
+
+function convertDistance(){
+ const v=$('distance').value;
+ if(v===''||Number(v)<0){$('unitResult').textContent='Enter a valid distance.';return}
+ const kmToMiles=$('unit').value==='km';
+ const result=kmToMiles?Number(v)*0.621371:Number(v)*1.609344;
+ $('unitResult').textContent='Result: '+result.toFixed(3)+(kmToMiles?' miles':' kilometres');
+}
+
+function budgetCalc(){
+ const a=$('income').value,b=$('expense').value;
+ if(a===''||b===''||Number(a)<0||Number(b)<0){$('budgetResult').textContent='Enter valid amounts.';return}
+ const balance=Number(a)-Number(b);
+ $('budgetResult').textContent=balance>=0?'Money remaining: Rs. '+balance:'You are over budget by Rs. '+Math.abs(balance);
+}
+
+function makePassword(){
+ const chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*';
+ const bytes=new Uint32Array(16);
+ crypto.getRandomValues(bytes);
+ $('passwordResult').textContent=Array.from(bytes,b=>chars[b%chars.length]).join('');
+}
+
+async function copyPassword(){
+ const p=$('passwordResult').textContent;
+ if(!p){$('passwordResult').textContent='Generate a password first.';return}
+ try{
+  await navigator.clipboard.writeText(p);
+  $('passwordResult').textContent='Password copied!';
+ }catch(e){
+  $('passwordResult').textContent='Copy manually: '+p;
+ }
+}
+
+function dateCalc(){
+ if(!$('date1').value||!$('date2').value){$('dateResult').textContent='Select both dates.';return}
+ const a=new Date($('date1').value+'T00:00:00Z');
+ const b=new Date($('date2').value+'T00:00:00Z');
+ $('dateResult').textContent='Days between dates: '+Math.abs(Math.round((b-a)/86400000));
+}
+
+function searchTools(){
+ const q=$('search').value.toLowerCase();
+ document.querySelectorAll('.card').forEach(card=>{
+  card.classList.toggle('hidden',!card.innerText.toLowerCase().includes(q));
+ });
 }
 
 let installPrompt;
+const installBtn=$('installBtn');
 
-const installBtn = document.getElementById("installBtn");
+if('serviceWorker' in navigator){
+ window.addEventListener('load',()=>{
+  navigator.serviceWorker.register('./sw.js').catch(error=>{
+   console.log('Service worker registration failed:',error);
+  });
+ });
+}
 
-window.addEventListener("beforeinstallprompt", event => {
-  event.preventDefault();
-  installPrompt = event;
-  installBtn.hidden = false;
+window.addEventListener('beforeinstallprompt',event=>{
+ event.preventDefault();
+ installPrompt=event;
+ installBtn.hidden=false;
 });
 
-installBtn.addEventListener("click", async () => {
-  if (!installPrompt) return;
-
-  installPrompt.prompt();
-  await installPrompt.userChoice;
-
-  installPrompt = null;
-  installBtn.hidden = true;
+installBtn.addEventListener('click',async()=>{
+ if(!installPrompt){
+  alert('If installation is supported, open your browser menu and choose Install app or Add to Home screen.');
+  return;
+ }
+ installPrompt.prompt();
+ await installPrompt.userChoice;
+ installPrompt=null;
+ installBtn.hidden=true;
 });
 
-window.addEventListener("appinstalled", () => {
-  installBtn.hidden = true;
+window.addEventListener('appinstalled',()=>{
+ installBtn.hidden=true;
 });
-<script>
-function calculate(){
-const a=document.getElementById('n1').value;
-const b=document.getElementById('n2').value;
-const op=document.getElementById('op').value;
-if(a===''||b===''){calcResult.textContent='Please enter both numbers.';return}
-const x=Number(a),y=Number(b);
-if(op==='/'&&y===0){calcResult.textContent='Cannot divide by zero.';return}
-const r=op==='+'?x+y:op==='-'?x-y:op==='*'?x*y:x/y;
-calcResult.textContent='Answer: '+r;
-}
-function ageCalc(){
-const value=dob.value;
-if(!value){ageResult.textContent='Please select your birth date.';return}
-const birth=new Date(value+'T00:00:00');
-const today=new Date();
-if(birth>today){ageResult.textContent='Birth date cannot be in the future.';return}
-let age=today.getFullYear()-birth.getFullYear();
-const beforeBirthday=today.getMonth()<birth.getMonth()||(today.getMonth()===birth.getMonth()&&today.getDate()<birth.getDate());
-if(beforeBirthday)age--;
-ageResult.textContent='Your age is '+age+' years.';
-}
-function countWords(){
-const t=words.value.trim();
-const count=t?t.split(/\s+/).length:0;
-wordResult.textContent='Words: '+count+' | Characters: '+words.value.length;
-}
-function convertDistance(){
-const v=distance.value;
-if(v===''||Number(v)<0){unitResult.textContent='Enter a valid distance.';return}
-const result=unit.value==='km'?Number(v)*0.621371:Number(v)*1.609344;
-unitResult.textContent='Result: '+result.toFixed(3)+(unit.value==='km'?' miles':' kilometres');
-}
-function budgetCalc(){
-if(income.value===''||expense.value===''||Number(income.value)<0||Number(expense.value)<0){budgetResult.textContent='Enter valid amounts.';return}
-const balance=Number(income.value)-Number(expense.value);
-budgetResult.textContent=balance>=0?'Money remaining: Rs. '+balance:'You are over budget by Rs. '+Math.abs(balance);
-}
-function makePassword(){
-const chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*';
-const bytes=new Uint32Array(16);
-crypto.getRandomValues(bytes);
-passwordResult.textContent=Array.from(bytes,b=>chars[b%chars.length]).join('');
-}
-async function copyPassword(){
-const p=passwordResult.textContent;
-if(!p){passwordResult.textContent='Generate a password first.';return}
-try{await navigator.clipboard.writeText(p);passwordResult.textContent='Password copied! '+p}
-catch(e){passwordResult.textContent='Select and copy this password: '+p}
-}
-function dateCalc(){
-if(!date1.value||!date2.value){dateResult.textContent='Select both dates.';return}
-const a=new Date(date1.value+'T00:00:00Z');
-const b=new Date(date2.value+'T00:00:00Z');
-dateResult.textContent='Days between dates: '+Math.abs(Math.round((b-a)/86400000));
-}
-function searchTools(){
-const q=search.value.toLowerCase();
-document.querySelectorAll('.card').forEach(card=>{
-card.classList.toggle('hidden',!card.innerText.toLowerCase().includes(q));
-});
-}
 </script>
 
 </body>
