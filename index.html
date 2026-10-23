@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HASSAM HELP HUB</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#08111f;color:white}
+header{background:linear-gradient(135deg,#123c69,#087f8c);padding:35px 15px;text-align:center}
+header h1{margin:0;font-size:32px}
+header p{color:#e0f7fa}
+.container{max-width:1000px;margin:auto;padding:20px}
+.search{width:100%;padding:14px;border:0;border-radius:10px;font-size:16px;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.card{background:#142338;border:1px solid #263b55;border-radius:15px;padding:20px}
+.card h3{color:#55e6d0}
+button{background:#08a99a;color:white;border:0;border-radius:8px;padding:11px 15px;cursor:pointer;font-size:15px}
+input,select,textarea{max-width:100%}
+.tool{margin-top:15px}
+.tool input,.tool textarea{width:100%;padding:10px;border-radius:7px;border:1px solid #aaa;margin:7px 0}
+.result{color:#7fffd4;overflow-wrap:anywhere}
+footer{text-align:center;padding:25px;color:#a9bacd}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<header>
+<h1>🌟 HASSAM HELP HUB</h1>
+<p>Helpful tools for everyday life — all in one place!</p>
+</header>
+
+<main class="container">
+<input class="search" id="search" placeholder="🔍 Search helpful tools..." oninput="searchTools()">
+
+<div class="grid" id="tools">
+
+<section class="card">
+<h3>🧮 Calculator</h3>
+<p>Calculate simple sums.</p>
+<div class="tool">
+<input id="n1" type="number" placeholder="First number">
+<select id="op">
+<option value="+">Add (+)</option>
+<option value="-">Subtract (-)</option>
+<option value="*">Multiply (×)</option>
+<option value="/">Divide (÷)</option>
+</select>
+<input id="n2" type="number" placeholder="Second number">
+<button onclick="calculate()">Calculate</button>
+<p class="result" id="calcResult"></p>
+</div>
+</section>
+
+<section class="card">
+<h3>🎂 Age Calculator</h3>
+<p>Find your age from your date of birth.</p>
+<div class="tool">
+<input type="date" id="dob">
+<button onclick="ageCalc()">Calculate Age</button>
+<p class="result" id="ageResult"></p>
+</div>
+</section>
+
+<section class="card">
+<h3>📝 Word Counter</h3>
+<p>Count words and characters in your text.</p>
+<div class="tool">
+<textarea id="words" rows="3" placeholder="Type or paste your text..." oninput="countWords()"></textarea>
+<p class="result" id="wordResult">Words: 0 | Characters: 0</p>
+</div>
+</section>
+
+<section class="card">
+<h3>📏 Unit Converter</h3>
+<p>Convert kilometres and miles.</p>
+<div class="tool">
+<input type="number" id="distance" placeholder="Enter distance">
+<select id="unit">
+<option value="km">Kilometres to miles</option>
+<option value="mi">Miles to kilometres</option>
+</select>
+<button onclick="convertDistance()">Convert</button>
+<p class="result" id="unitResult"></p>
+</div>
+</section>
+
+<section class="card">
+<h3>💰 Budget Calculator</h3>
+<p>Calculate money left after expenses.</p>
+<div class="tool">
+<input type="number" id="income" placeholder="Total income (Rs.)">
+<input type="number" id="expense" placeholder="Total expenses (Rs.)">
+<button onclick="budgetCalc()">Calculate Budget</button>
+<p class="result" id="budgetResult"></p>
+</div>
+</section>
+
+<section class="card">
+<h3>🔐 Password Generator</h3>
+<p>Generate a random password on your device.</p>
+<div class="tool">
+<button onclick="makePassword()">Generate Password</button>
+<p class="result" id="passwordResult"></p>
+<button onclick="copyPassword()">Copy Password</button>
+</div>
+</section>
+
+<section class="card">
+<h3>🆘 Emergency Help</h3>
+<p>Pakistan emergency contact information.</p>
+<p>🚑 Rescue / Emergency: <b>1122</b></p>
+<p>🚓 Police: <b>15</b></p>
+<p>Use emergency numbers only when needed. Availability may vary by area.</p>
+</section>
+
+<section class="card">
+<h3>📅 Days Between Dates</h3>
+<p>Calculate the number of days between two dates.</p>
+<div class="tool">
+<input type="date" id="date1">
+<input type="date" id="date2">
+<button onclick="dateCalc()">Calculate Days</button>
+<p class="result" id="dateResult"></p>
+</div>
+</section>
+
+</div>
+</main>
+
+<footer>
+<p>Made with ❤️ by Hassam Jutt</p>
+<p>HASSAM HELP HUB © 2026</p>
+</footer>
+
+<script>
+function calculate(){
+const a=document.getElementById('n1').value;
+const b=document.getElementById('n2').value;
+const op=document.getElementById('op').value;
+if(a===''||b===''){calcResult.textContent='Please enter both numbers.';return}
+const x=Number(a),y=Number(b);
+if(op==='/'&&y===0){calcResult.textContent='Cannot divide by zero.';return}
+const r=op==='+'?x+y:op==='-'?x-y:op==='*'?x*y:x/y;
+calcResult.textContent='Answer: '+r;
+}
+function ageCalc(){
+const value=dob.value;
+if(!value){ageResult.textContent='Please select your birth date.';return}
+const birth=new Date(value+'T00:00:00');
+const today=new Date();
+if(birth>today){ageResult.textContent='Birth date cannot be in the future.';return}
+let age=today.getFullYear()-birth.getFullYear();
+const beforeBirthday=today.getMonth()<birth.getMonth()||(today.getMonth()===birth.getMonth()&&today.getDate()<birth.getDate());
+if(beforeBirthday)age--;
+ageResult.textContent='Your age is '+age+' years.';
+}
+function countWords(){
+const t=words.value.trim();
+const count=t?t.split(/\s+/).length:0;
+wordResult.textContent='Words: '+count+' | Characters: '+words.value.length;
+}
+function convertDistance(){
+const v=distance.value;
+if(v===''||Number(v)<0){unitResult.textContent='Enter a valid distance.';return}
+const result=unit.value==='km'?Number(v)*0.621371:Number(v)*1.609344;
+unitResult.textContent='Result: '+result.toFixed(3)+(unit.value==='km'?' miles':' kilometres');
+}
+function budgetCalc(){
+if(income.value===''||expense.value===''||Number(income.value)<0||Number(expense.value)<0){budgetResult.textContent='Enter valid amounts.';return}
+const balance=Number(income.value)-Number(expense.value);
+budgetResult.textContent=balance>=0?'Money remaining: Rs. '+balance:'You are over budget by Rs. '+Math.abs(balance);
+}
+function makePassword(){
+const chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*';
+const bytes=new Uint32Array(16);
+crypto.getRandomValues(bytes);
+passwordResult.textContent=Array.from(bytes,b=>chars[b%chars.length]).join('');
+}
+async function copyPassword(){
+const p=passwordResult.textContent;
+if(!p){passwordResult.textContent='Generate a password first.';return}
+try{await navigator.clipboard.writeText(p);passwordResult.textContent='Password copied! '+p}
+catch(e){passwordResult.textContent='Select and copy this password: '+p}
+}
+function dateCalc(){
+if(!date1.value||!date2.value){dateResult.textContent='Select both dates.';return}
+const a=new Date(date1.value+'T00:00:00Z');
+const b=new Date(date2.value+'T00:00:00Z');
+dateResult.textContent='Days between dates: '+Math.abs(Math.round((b-a)/86400000));
+}
+function searchTools(){
+const q=search.value.toLowerCase();
+document.querySelectorAll('.card').forEach(card=>{
+card.classList.toggle('hidden',!card.innerText.toLowerCase().includes(q));
+});
+}
+</script>
+
+</body>
+</html>
