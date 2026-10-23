@@ -1,254 +1,457 @@
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#123c69">
-<meta name="description" content="Free helpful tools for everyday life by Hassam Jutt.">
-<link rel="manifest" href="./manifest.json">
+<meta name="description" content="HASSAM HELP HUB - Helpful free tools for everyday life.">
 <title>HASSAM HELP HUB</title>
 
-<style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#08111f;color:white}
-header{background:linear-gradient(135deg,#123c69,#087f8c);padding:35px 15px;text-align:center}
-header h1{margin:15px 0;font-size:32px}
-header p{color:#e0f7fa}
-.container{max-width:1000px;margin:auto;padding:20px}
-.search{width:100%;padding:14px;border:0;border-radius:10px;font-size:16px;margin-bottom:20px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
-.card{background:#142338;border:1px solid #263b55;border-radius:15px;padding:20px}
-.card h3{color:#55e6d0}
-button{background:#08a99a;color:white;border:0;border-radius:8px;padding:11px 15px;cursor:pointer;font-size:15px;margin:4px 0}
-button:hover{background:#087f8c}
-input,select,textarea{max-width:100%;font-size:15px}
-.tool{margin-top:15px}
-.tool input,.tool textarea,.tool select{width:100%;padding:10px;border-radius:7px;border:1px solid #aaa;margin:7px 0}
-.result{color:#7fffd4;overflow-wrap:anywhere}
-footer{text-align:center;padding:25px;color:#a9bacd}
-.hidden{display:none!important}
-#installBtn{background:#fff;color:#123c69;font-weight:bold;padding:13px 18px}
-</style>
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
 
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #08111f;
+  color: #f5f7ff;
+}
+
+header {
+  text-align: center;
+  padding: 35px 15px;
+  background: linear-gradient(135deg, #123c69, #087f8c);
+}
+
+header h1 {
+  margin: 0 0 10px;
+  font-size: 32px;
+}
+
+header p {
+  margin: 0;
+  color: #e1f5ff;
+}
+
+#installBtn {
+  margin-top: 18px;
+  padding: 12px 20px;
+  background: #ffffff;
+  color: #123c69;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+main {
+  max-width: 1100px;
+  margin: auto;
+  padding: 20px;
+}
+
+.tools {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  background: #111e30;
+  border: 1px solid #263c56;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 5px 18px #00000025;
+}
+
+.card h2 {
+  color: #58d8e8;
+  font-size: 21px;
+  margin-top: 0;
+}
+
+.card p {
+  color: #c8d4e5;
+  line-height: 1.5;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 11px;
+  margin: 7px 0;
+  border: 1px solid #40546e;
+  border-radius: 7px;
+  background: #08111f;
+  color: white;
+  font-size: 15px;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+button {
+  padding: 11px 14px;
+  border: none;
+  border-radius: 7px;
+  background: #08a6b5;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+button:hover {
+  background: #087f8c;
+}
+
+.result {
+  overflow-wrap: anywhere;
+  margin-top: 12px;
+  color: #7df0c5;
+  font-weight: bold;
+  min-height: 20px;
+}
+
+.emergency {
+  color: #ffcc66;
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+footer {
+  text-align: center;
+  padding: 25px 12px;
+  margin-top: 20px;
+  color: #aab9cc;
+  border-top: 1px solid #263c56;
+}
+
+.small {
+  font-size: 13px;
+  color: #aab9cc;
+}
+</style>
 </head>
 
 <body>
+
 <header>
-<button id="installBtn" hidden>📲 Install HASSAM HELP HUB</button>
-<h1>🌟 HASSAM HELP HUB</h1>
-<p>Helpful tools for everyday life — all in one place!</p>
+  <h1>🌟 HASSAM HELP HUB</h1>
+  <p>Helpful tools for everyday life — all in one place!</p>
+  <button id="installBtn" hidden>📲 Install App</button>
 </header>
 
-<main class="container">
-<input class="search" id="search" placeholder="🔍 Search helpful tools..." oninput="searchTools()">
+<main>
+<section class="tools">
 
-<div class="grid">
+  <div class="card">
+    <h2>🧮 Calculator</h2>
+    <p>Calculate simple sums.</p>
+    <input type="number" id="num1" placeholder="First number" step="any">
+    <select id="operator">
+      <option value="+">Add (+)</option>
+      <option value="-">Subtract (-)</option>
+      <option value="*">Multiply (×)</option>
+      <option value="/">Divide (÷)</option>
+    </select>
+    <input type="number" id="num2" placeholder="Second number" step="any">
+    <button onclick="calculate()">Calculate</button>
+    <div class="result" id="calcResult" aria-live="polite"></div>
+  </div>
 
-<section class="card">
-<h3>🧮 Calculator</h3>
-<p>Calculate simple sums.</p>
-<div class="tool">
-<input id="n1" type="number" placeholder="First number">
-<select id="op">
-<option value="+">Add (+)</option>
-<option value="-">Subtract (-)</option>
-<option value="*">Multiply (×)</option>
-<option value="/">Divide (÷)</option>
-</select>
-<input id="n2" type="number" placeholder="Second number">
-<button onclick="calculate()">Calculate</button>
-<p class="result" id="calcResult"></p>
-</div>
+  <div class="card">
+    <h2>🎂 Age Calculator</h2>
+    <p>Find your age from your date of birth.</p>
+    <input type="date" id="birthDate" aria-label="Date of birth">
+    <button onclick="calculateAge()">Calculate Age</button>
+    <div class="result" id="ageResult" aria-live="polite"></div>
+  </div>
+
+  <div class="card">
+    <h2>📝 Word Counter</h2>
+    <p>Count words and characters in your text.</p>
+    <textarea id="wordText" placeholder="Type or paste your text here..."></textarea>
+    <p>Words: <strong id="wordCount">0</strong> |
+    Characters: <strong id="charCount">0</strong></p>
+  </div>
+
+  <div class="card">
+    <h2>📏 Unit Converter</h2>
+    <p>Convert kilometres and miles.</p>
+    <input type="number" id="distance" placeholder="Enter distance" min="0" step="any">
+    <select id="unitType">
+      <option value="km">Kilometres to miles</option>
+      <option value="mi">Miles to kilometres</option>
+    </select>
+    <button onclick="convertDistance()">Convert</button>
+    <div class="result" id="distanceResult" aria-live="polite"></div>
+  </div>
+
+  <div class="card">
+    <h2>💰 Budget Calculator</h2>
+    <p>Calculate money left after expenses.</p>
+    <input type="number" id="income" placeholder="Total money" min="0" step="any">
+    <input type="number" id="expenses" placeholder="Total expenses" min="0" step="any">
+    <button onclick="calculateBudget()">Calculate Budget</button>
+    <div class="result" id="budgetResult" aria-live="polite"></div>
+  </div>
+
+  <div class="card">
+    <h2>🔐 Password Generator</h2>
+    <p>Generate a random password on your device.</p>
+    <label for="passLength">Password length:</label>
+    <select id="passLength">
+      <option value="8">8 characters</option>
+      <option value="12" selected>12 characters</option>
+      <option value="16">16 characters</option>
+      <option value="20">20 characters</option>
+    </select>
+    <button onclick="generatePassword()">Generate Password</button>
+    <input id="passwordOutput" readonly placeholder="Your password will appear here">
+    <button onclick="copyPassword()">Copy Password</button>
+    <div class="result" id="passwordResult" aria-live="polite"></div>
+  </div>
+
+  <div class="card">
+    <h2>🆘 Emergency Help</h2>
+    <p>Pakistan emergency contact information.</p>
+    <div class="emergency">
+      🚑 Rescue / Emergency: <strong>1122</strong><br>
+      🚓 Police: <strong>15</strong>
+    </div>
+    <p class="small">Use emergency numbers only when needed. Availability may vary by area.</p>
+  </div>
+
+  <div class="card">
+    <h2>📅 Days Between Dates</h2>
+    <p>Calculate the number of days between two dates.</p>
+    <label for="date1">First date:</label>
+    <input type="date" id="date1">
+    <label for="date2">Second date:</label>
+    <input type="date" id="date2">
+    <button onclick="calculateDays()">Calculate Days</button>
+    <div class="result" id="daysResult" aria-live="polite"></div>
+  </div>
+
 </section>
-
-<section class="card">
-<h3>🎂 Age Calculator</h3>
-<p>Find your age from your date of birth.</p>
-<div class="tool">
-<input type="date" id="dob">
-<button onclick="ageCalc()">Calculate Age</button>
-<p class="result" id="ageResult"></p>
-</div>
-</section>
-
-<section class="card">
-<h3>📝 Word Counter</h3>
-<p>Count words and characters in your text.</p>
-<div class="tool">
-<textarea id="words" rows="3" placeholder="Type or paste your text..." oninput="countWords()"></textarea>
-<p class="result" id="wordResult">Words: 0 | Characters: 0</p>
-</div>
-</section>
-
-<section class="card">
-<h3>📏 Unit Converter</h3>
-<p>Convert kilometres and miles.</p>
-<div class="tool">
-<input type="number" id="distance" placeholder="Enter distance">
-<select id="unit">
-<option value="km">Kilometres to miles</option>
-<option value="mi">Miles to kilometres</option>
-</select>
-<button onclick="convertDistance()">Convert</button>
-<p class="result" id="unitResult"></p>
-</div>
-</section>
-
-<section class="card">
-<h3>💰 Budget Calculator</h3>
-<p>Calculate money left after expenses.</p>
-<div class="tool">
-<input type="number" id="income" placeholder="Total income (Rs.)">
-<input type="number" id="expense" placeholder="Total expenses (Rs.)">
-<button onclick="budgetCalc()">Calculate Budget</button>
-<p class="result" id="budgetResult"></p>
-</div>
-</section>
-
-<section class="card">
-<h3>🔐 Password Generator</h3>
-<p>Generate a random password on your device.</p>
-<div class="tool">
-<button onclick="makePassword()">Generate Password</button>
-<p class="result" id="passwordResult"></p>
-<button onclick="copyPassword()">Copy Password</button>
-</div>
-</section>
-
-<section class="card">
-<h3>🆘 Emergency Help</h3>
-<p>Pakistan emergency contact information.</p>
-<p>🚑 Rescue / Emergency: <b>1122</b></p>
-<p>🚓 Police: <b>15</b></p>
-<p>Use emergency numbers only when needed. Availability may vary by area.</p>
-</section>
-
-<section class="card">
-<h3>📅 Days Between Dates</h3>
-<p>Calculate the number of days between two dates.</p>
-<div class="tool">
-<input type="date" id="date1">
-<input type="date" id="date2">
-<button onclick="dateCalc()">Calculate Days</button>
-<p class="result" id="dateResult"></p>
-</div>
-</section>
-
-</div>
 </main>
 
 <footer>
-<p>Made with ❤️ by Hassam Jutt</p>
-<p>HASSAM HELP HUB © 2026</p>
+  <p>Made with ❤️ by Hassam Jutt</p>
+  <p>HASSAM HELP HUB © 2026</p>
 </footer>
 
 <script>
-const $ = id => document.getElementById(id);
+function calculate() {
+  const a = document.getElementById("num1").value;
+  const b = document.getElementById("num2").value;
+  const op = document.getElementById("operator").value;
+  const out = document.getElementById("calcResult");
 
-function calculate(){
- const a=$('n1').value,b=$('n2').value,op=$('op').value;
- if(a===''||b===''){$('calcResult').textContent='Please enter both numbers.';return}
- const x=Number(a),y=Number(b);
- if(op==='/'&&y===0){$('calcResult').textContent='Cannot divide by zero.';return}
- const r=op==='+'?x+y:op==='-'?x-y:op==='*'?x*y:x/y;
- $('calcResult').textContent='Answer: '+r;
+  if (a.trim() === "" || b.trim() === "") {
+    out.textContent = "Please enter both numbers.";
+    return;
+  }
+
+  const x = Number(a);
+  const y = Number(b);
+  let answer;
+
+  if (op === "+") answer = x + y;
+  else if (op === "-") answer = x - y;
+  else if (op === "*") answer = x * y;
+  else {
+    if (y === 0) {
+      out.textContent = "Cannot divide by zero.";
+      return;
+    }
+    answer = x / y;
+  }
+
+  out.textContent = "Result: " + answer;
 }
 
-function ageCalc(){
- const value=$('dob').value;
- if(!value){$('ageResult').textContent='Please select your birth date.';return}
- const birth=new Date(value+'T00:00:00'),today=new Date();
- if(birth>today){$('ageResult').textContent='Birth date cannot be in the future.';return}
- let age=today.getFullYear()-birth.getFullYear();
- if(today.getMonth()<birth.getMonth()||(today.getMonth()===birth.getMonth()&&today.getDate()<birth.getDate()))age--;
- $('ageResult').textContent='Your age is '+age+' years.';
+function calculateAge() {
+  const value = document.getElementById("birthDate").value;
+  const out = document.getElementById("ageResult");
+
+  if (!value) {
+    out.textContent = "Please select your date of birth.";
+    return;
+  }
+
+  const birth = new Date(value + "T00:00:00");
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  if (birth > today) {
+    out.textContent = "Date of birth cannot be in the future.";
+    return;
+  }
+
+  let years = today.getFullYear() - birth.getFullYear();
+  let months = today.getMonth() - birth.getMonth();
+  let days = today.getDate() - birth.getDate();
+
+  if (days < 0) {
+    months--;
+    const previousMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+    days += previousMonth.getDate();
+  }
+
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  out.textContent = years + " years, " + months + " months, " + days + " days";
 }
 
-function countWords(){
- const t=$('words').value.trim();
- $('wordResult').textContent='Words: '+(t?t.split(/\s+/).length:0)+' | Characters: '+$('words').value.length;
+const wordText = document.getElementById("wordText");
+
+wordText.addEventListener("input", function() {
+  const text = wordText.value.trim();
+  const words = text ? text.split(/\s+/).length : 0;
+
+  document.getElementById("wordCount").textContent = words;
+  document.getElementById("charCount").textContent = wordText.value.length;
+});
+
+function convertDistance() {
+  const value = document.getElementById("distance").value;
+  const out = document.getElementById("distanceResult");
+
+  if (value.trim() === "" || Number(value) < 0) {
+    out.textContent = "Please enter a valid distance.";
+    return;
+  }
+
+  const n = Number(value);
+  const unit = document.getElementById("unitType").value;
+
+  if (unit === "km") {
+    out.textContent = (n * 0.621371).toFixed(3) + " miles";
+  } else {
+    out.textContent = (n * 1.609344).toFixed(3) + " kilometres";
+  }
 }
 
-function convertDistance(){
- const v=$('distance').value;
- if(v===''||Number(v)<0){$('unitResult').textContent='Enter a valid distance.';return}
- const kmToMiles=$('unit').value==='km';
- const result=kmToMiles?Number(v)*0.621371:Number(v)*1.609344;
- $('unitResult').textContent='Result: '+result.toFixed(3)+(kmToMiles?' miles':' kilometres');
+function calculateBudget() {
+  const incomeValue = document.getElementById("income").value;
+  const expenseValue = document.getElementById("expenses").value;
+  const out = document.getElementById("budgetResult");
+
+  if (incomeValue.trim() === "" || expenseValue.trim() === "" ||
+      Number(incomeValue) < 0 || Number(expenseValue) < 0) {
+    out.textContent = "Enter valid amounts for money and expenses.";
+    return;
+  }
+
+  const remaining = Number(incomeValue) - Number(expenseValue);
+  out.textContent = remaining >= 0
+    ? "Money left: " + remaining.toFixed(2)
+    : "Over budget by: " + Math.abs(remaining).toFixed(2);
 }
 
-function budgetCalc(){
- const a=$('income').value,b=$('expense').value;
- if(a===''||b===''||Number(a)<0||Number(b)<0){$('budgetResult').textContent='Enter valid amounts.';return}
- const balance=Number(a)-Number(b);
- $('budgetResult').textContent=balance>=0?'Money remaining: Rs. '+balance:'You are over budget by Rs. '+Math.abs(balance);
+function generatePassword() {
+  const length = Number(document.getElementById("passLength").value);
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*?";
+  const randomValues = new Uint32Array(length);
+  crypto.getRandomValues(randomValues);
+
+  let password = "";
+  for (let i = 0; i < length; i++) {
+    password += chars[randomValues[i] % chars.length];
+  }
+
+  document.getElementById("passwordOutput").value = password;
+  document.getElementById("passwordResult").textContent = "";
 }
 
-function makePassword(){
- const chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*';
- const bytes=new Uint32Array(16);
- crypto.getRandomValues(bytes);
- $('passwordResult').textContent=Array.from(bytes,b=>chars[b%chars.length]).join('');
+async function copyPassword() {
+  const field = document.getElementById("passwordOutput");
+  const out = document.getElementById("passwordResult");
+
+  if (!field.value) {
+    out.textContent = "Generate a password first.";
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(field.value);
+    out.textContent = "Password copied!";
+  } catch (error) {
+    field.select();
+    const copied = document.execCommand("copy");
+    out.textContent = copied
+      ? "Password copied!"
+      : "Please select and copy the password manually.";
+  }
 }
 
-async function copyPassword(){
- const p=$('passwordResult').textContent;
- if(!p){$('passwordResult').textContent='Generate a password first.';return}
- try{
-  await navigator.clipboard.writeText(p);
-  $('passwordResult').textContent='Password copied!';
- }catch(e){
-  $('passwordResult').textContent='Copy manually: '+p;
- }
+function calculateDays() {
+  const a = document.getElementById("date1").value;
+  const b = document.getElementById("date2").value;
+  const out = document.getElementById("daysResult");
+
+  if (!a || !b) {
+    out.textContent = "Please select both dates.";
+    return;
+  }
+
+  const first = new Date(a + "T00:00:00Z");
+  const second = new Date(b + "T00:00:00Z");
+  const difference = Math.abs(second - first);
+  const days = Math.round(difference / 86400000);
+
+  out.textContent = "Days between dates: " + days;
 }
 
-function dateCalc(){
- if(!$('date1').value||!$('date2').value){$('dateResult').textContent='Select both dates.';return}
- const a=new Date($('date1').value+'T00:00:00Z');
- const b=new Date($('date2').value+'T00:00:00Z');
- $('dateResult').textContent='Days between dates: '+Math.abs(Math.round((b-a)/86400000));
-}
-
-function searchTools(){
- const q=$('search').value.toLowerCase();
- document.querySelectorAll('.card').forEach(card=>{
-  card.classList.toggle('hidden',!card.innerText.toLowerCase().includes(q));
- });
-}
-
-let installPrompt;
-const installBtn=$('installBtn');
-
-if('serviceWorker' in navigator){
- window.addEventListener('load',()=>{
-  navigator.serviceWorker.register('./sw.js').catch(error=>{
-   console.log('Service worker registration failed:',error);
+// Register the service worker so the website can work as an installable app.
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker.register("./sw.js")
+      .catch(function(error) {
+        console.log("Service worker error:", error);
+      });
   });
- });
 }
 
-window.addEventListener('beforeinstallprompt',event=>{
- event.preventDefault();
- installPrompt=event;
- installBtn.hidden=false;
+// Show the install button when the browser supports the install prompt.
+let installPrompt = null;
+const installBtn = document.getElementById("installBtn");
+
+window.addEventListener("beforeinstallprompt", function(event) {
+  event.preventDefault();
+  installPrompt = event;
+  installBtn.hidden = false;
 });
 
-installBtn.addEventListener('click',async()=>{
- if(!installPrompt){
-  alert('If installation is supported, open your browser menu and choose Install app or Add to Home screen.');
-  return;
- }
- installPrompt.prompt();
- await installPrompt.userChoice;
- installPrompt=null;
- installBtn.hidden=true;
+installBtn.addEventListener("click", async function() {
+  if (!installPrompt) {
+    alert("Open your browser menu and look for Install app or Add to Home screen.");
+    return;
+  }
+
+  installPrompt.prompt();
+  await installPrompt.userChoice;
+  installPrompt = null;
+  installBtn.hidden = true;
 });
 
-window.addEventListener('appinstalled',()=>{
- installBtn.hidden=true;
+window.addEventListener("appinstalled", function() {
+  installBtn.hidden = true;
 });
 </script>
 
 </body>
 </html>
+
