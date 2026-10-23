@@ -1,0 +1,19 @@
+{
+"name": "HASSAM HELP HUB",
+"short_name": "Hassam Hub",
+"description": "Helpful tools for everyday life",
+"start_url": "./",
+"scope": "./",
+"display": "standalone",
+"background_color": "#08111f",
+"theme_color": "#123c69",
+"orientation": "portrait",
+"icons": [
+{
+"src": "icon.svg",
+"sizes": "any",
+"type": "image/svg+xml",
+"purpose": "any"
+}
+]
+}
